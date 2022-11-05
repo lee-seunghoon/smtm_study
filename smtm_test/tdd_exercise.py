@@ -25,5 +25,5 @@ class TddExercise:
         response=requests.get(self.URL, params=query_string)
         self.data=response.json()
 
-        print(self.data)
-        print(self.data[0])
+        #print(self.data)
+        #print(self.data[0])

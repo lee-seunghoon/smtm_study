@@ -45,6 +45,7 @@ class SimulationDataProvider(DataProvider):
             headers = {"accept": "application/json"}
             res=requests.get(self.URL, params=query_string, headers=headers)
             res.raise_for_status()
+            # 리스트 안 json 형태로 데이터 반환
             self.data=res.json()
             # 최신순부터 데이터를 가져와서 역순으로 정렬하여 과거데이터가 제일 먼저 오도록
             self.data.reverse()

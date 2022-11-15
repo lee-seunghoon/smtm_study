@@ -1,0 +1,56 @@
+2022-11-15 21:31:41,717  INFO SimulationDataProvid    51 - data is updated from server # end: 2020-04-30T16:30:00, count: 50
+2022-11-15 21:31:41,718  INFO SimulationDataProvid    88 - [DATA] @ 2020-04-30T15:40:00
+2022-11-15 21:31:41,718 WARNI SimulationDataProvid   111 - invalid data from candle info
+2022-11-15 21:31:41,752  INFO SimulationDataProvid    51 - data is updated from server # end: None, count: 50
+2022-11-15 21:31:41,753  INFO SimulationDataProvid    88 - [DATA] @ 2022-11-15T11:42:00
+2022-11-15 21:31:41,753 WARNI SimulationDataProvid   111 - invalid data from candle info
+2022-11-15 21:34:32,454  INFO SimulationDataProvid    51 - data is updated from server # end: None, count: 50
+2022-11-15 21:34:32,454  INFO SimulationDataProvid    88 - [DATA] @ 2022-11-15T11:45:00
+2022-11-15 21:34:32,455 WARNI SimulationDataProvid   111 - invalid data from candle info
+2022-11-15 21:39:29,906  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:39:29,907  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T11:50:00
+2022-11-15 21:39:29,907 WARNI SimulationDataProvid   112 - invalid data from candle info
+2022-11-15 21:41:26,736  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:41:55,762  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:44:05,390  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:46:30,417  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:49:39,378  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:50:53,771  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:51:03,226  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:51:03,227 WARNI SimulationDataProvid   112 - invalid data from candle info
+2022-11-15 21:52:54,141  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:52:54,142  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T12:03:00
+2022-11-15 21:52:54,142 WARNI SimulationDataProvid   112 - invalid data from candle info
+2022-11-15 21:54:35,794  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:54:35,795  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T12:05:00
+2022-11-15 21:54:35,795 WARNI SimulationDataProvid   112 - invalid data from candle info
+2022-11-15 21:55:58,091  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:55:58,092  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T12:06:00
+2022-11-15 21:56:13,637  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:56:13,638  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T12:07:00
+2022-11-15 21:56:33,660  INFO SimulationDataProvid    52 - data is updated from server # end: 2020-04-30T16:30:00, count: 50
+2022-11-15 21:56:33,661  INFO SimulationDataProvid    89 - [DATA] @ 2020-04-30T15:40:00
+2022-11-15 21:56:33,699  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:56:33,699  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T12:07:00
+2022-11-15 21:57:14,833  INFO SimulationDataProvid    52 - data is updated from server # end: 2020-04-30T16:30:00, count: 50
+2022-11-15 21:57:14,834  INFO SimulationDataProvid    89 - [DATA] @ 2020-04-30T15:40:00
+2022-11-15 21:57:14,867  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:57:14,868  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T12:08:00
+2022-11-15 21:59:43,047  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 21:59:55,641  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 22:00:10,834  INFO SimulationDataProvid    52 - data is updated from server # end: 2020-04-30T16:30:00, count: 50
+2022-11-15 22:01:18,387  INFO SimulationDataProvid    52 - data is updated from server # end: 2020-04-30T16:30:00, count: 50
+2022-11-15 22:01:18,388  INFO SimulationDataProvid    89 - [DATA] @ 2020-05-01T00:40:00
+2022-11-15 22:01:18,425  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 22:01:18,425  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T21:12:00
+2022-11-15 22:02:48,486  INFO SimulationDataProvid    52 - data is updated from server # end: 2020-04-30T16:30:00, count: 50
+2022-11-15 22:03:59,029  INFO SimulationDataProvid    52 - data is updated from server # end: 2020-04-30T16:30:00, count: 50
+2022-11-15 22:03:59,030  INFO SimulationDataProvid    89 - [DATA] @ 2020-05-01T00:40:00
+2022-11-15 22:03:59,030  INFO SimulationDataProvid    89 - [DATA] @ 2020-05-01T00:41:00
+2022-11-15 22:03:59,062  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 22:03:59,062  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T21:14:00
+2022-11-15 22:04:49,576  INFO SimulationDataProvid    52 - data is updated from server # end: 2020-04-30T16:30:00, count: 50
+2022-11-15 22:04:49,577  INFO SimulationDataProvid    89 - [DATA] @ 2020-05-01T00:40:00
+2022-11-15 22:04:49,577  INFO SimulationDataProvid    89 - [DATA] @ 2020-05-01T00:41:00
+2022-11-15 22:04:49,612  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
+2022-11-15 22:04:49,613  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T21:15:00

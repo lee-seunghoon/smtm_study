@@ -1,11 +1,15 @@
 """
 시뮬레이션을 위한 DataProvider 구현체
 """
-
+import os
+import sys
 import copy
 import requests
-from . import DataProvider
-from . import LogManager
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from smtm.data_provider import DataProvider
+from smtm.log_manager import LogManager
+
 
 class SimulationDataProvider(DataProvider):
     """
@@ -38,9 +42,11 @@ class SimulationDataProvider(DataProvider):
         query_string['count']=count
 
         try:
-            res=requests.get(self.URL, params=query_string)
+            headers = {"accept": "application/json"}
+            res=requests.get(self.URL, params=query_string, headers=headers)
             res.raise_for_status()
             self.data=res.json()
+            # 최신순부터 데이터를 가져와서 역순으로 정렬하여 과거데이터가 제일 먼저 오도록
             self.data.reverse()
             self.is_initialized=True
             self.logger.info(f"data is updated from server # end: {end}, count: {count}")
@@ -80,7 +86,7 @@ class SimulationDataProvider(DataProvider):
         # 새로운 데이터 가져오기 전에 index 갱신
         # get_info 메서드가 호출될 때마다 다음 데이터를 전달
         self.index=now+1
-        self.logger.info(f'[DATA] @ {self.data[now]["candle_date_time_utc"]}')
+        self.logger.info(f'[DATA] @ {self.data[now]["candle_date_time_kst"]}')
         return self.__create_candle_info(self.data[now])
 
     # class의 메서드 명 앞에 __(언더바 2개)로 시작하면 privat 메서드를 의미
@@ -100,8 +106,16 @@ class SimulationDataProvider(DataProvider):
                 "low_price":data["low_price"],
                 "closing_price":data["trade_price"],
                 "acc_price":data["candle_acc_trade_price"],
-                "acc_volume":data["candle_acc_trade_colume"]
+                "acc_volume":data["candle_acc_trade_volume"]
             }
         except KeyError:
             self.logger.warning("invalid data from candle info")
             return None
+
+
+if __name__=='__main__':
+    dp=SimulationDataProvider()
+    end_date='2020-04-30T16:30:00'
+    count=50
+    dp.initialize_simulation(end=end_date,count=count)
+    print(dp.data[1])

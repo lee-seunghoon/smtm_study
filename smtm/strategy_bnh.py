@@ -1,4 +1,5 @@
 import copy
+import math
 import time
 from datetime import datetime, time
 from . import Strategy, LogManager
@@ -32,6 +33,71 @@ class StrategyBuyAndHold(Strategy):
         self.name = "BnH"
         self.waiting_requests = {}
 
+    def update_trading_info(self, info):
+        """
+        새로운 거래 정보를 업데이트
+        Returns: 거래 정보 딕셔너리
+        {
+            "market": 거래 시장 종류 BTC
+            "date_time": 정보의 기준 시간
+            "opening_price": 시작 거래 가격
+            "high_price": 최고 거래 가격
+            "low_price": 최저 거래 가격
+            "closing_price": 마지막 거래 가격
+            "acc_price": 단위 시간내 누적 거래 금액
+            "acc_volume": 단위 시간내 누적 거래 양
+        }
+        """
+        if self.is_intialized is not True:
+            return
+        self.data.append(copy.deepcopy(info))
+
+    def update_result(self, result):
+        """
+        요청한 거래의 결과를 업데이트
+        request: 거래 요청 정보
+        result:
+        {
+            "request": 요청 정보
+            "type": 거래 유형 sell, buy, cancel
+            "price": 거래 가격
+            "amount": 거래 수량
+            "msg": 거래 결과 메세지
+            "state": 거래 상태 requested, done
+            "date_time": 시뮬레이션 모드에서는 데이터 시간 +2초
+        }
+        """
+        if self.is_intialized is not True:
+            return
+
+        try:
+            request=result['request']
+            # 거래 상태가 requested 일 경우
+            if result['state']=="requested":
+                self.waiting_requests[request['id']]=result
+                return
+            # 거래가 이미 완료 됐고, waiting requests에 id값이 이미 있을 때
+            # self.waiting_requests 에서 요청값의 id로 저장된 값을 지운다
+            if result['state']=='done' and request['id'] in self.waiting_requests:
+                del self.waiting_requests[request["id"]]
+
+            total=float(result['price']) * float(result['amount'])
+            fee=total * self.COMMISSION_RATIO
+            if result['type']=='buy':
+                self.balance-=round(total+fee)
+            else:
+                self.balance+=round(total-fee)
+
+            self.logger.info(f"[RESULT] id: {result['request']['id']} ================")
+            self.logger.info(f"type: {result['type']}, msg: {result['msg']}")
+            self.logger.info(f"price: {result['price']}, amount: {result['amount']}")
+            self.logger.info(f"total: {total}, balance: {self.balance}")
+            self.logger.info("================================================")
+            self.result.append(copy.deepcopy(result))
+
+        except (AttributeError, TypeError) as msg:
+            self.logger.error(msg)
+
     def get_request(self):
         """
         데이터 분석 결과에 따라 거래 요청 정보를 생성한다
@@ -61,8 +127,18 @@ class StrategyBuyAndHold(Strategy):
             
             target_budget=self.budget/5
             # 목표한 예산이 현재 잔고보다 많을 경우
+            # 목표 예산을 현재 잔고에 맞춘다
             if target_budget>self.balance:
                 target_budget=self.balance
+
+            amount=math.floor((target_budget/last_closing_price)*10000)/10000
+            trading_request={
+                "id":DateConverter.timestamp_id(),
+                "type":"buy",
+                "price":last_closing_price,
+                "amount":amount,
+                "date_time":now
+            }
 
         except (ValueError, KeyError) as msg:
             self.logger.error(f"invalid data {msg}")

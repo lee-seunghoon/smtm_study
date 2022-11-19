@@ -48,8 +48,11 @@ class StrategyBuyAndHold(Strategy):
             "acc_volume": 단위 시간내 누적 거래 양
         }
         """
+        # 업데이트 전에 항상 초기화가 돼 있어야 한다
         if self.is_intialized is not True:
             return
+        
+        # info == 최종 거래 요청 정보
         self.data.append(copy.deepcopy(info))
 
     def update_result(self, result):
@@ -116,29 +119,65 @@ class StrategyBuyAndHold(Strategy):
             return None
 
         try:
+            # 데이터가 없을 경우
             if len(self.data)==0 or self.data[-1] is None:
                 raise UserWarning("data is empty")
-            last_closing_price=self.data[-1]['closing_price']
-            # 현재 date
-            now=datetime.now().strftime(self.ISO_DATEFORMAT)
 
+            # 마지막 데이터의 종가
+            last_closing_price=self.data[-1]['closing_price']
+
+            # 거래 요청 정보의 시간
+            # 기본으로 현재의 시간을 입력하되
+            # 시뮬레이션 상황이면, 기준 데이터의 시간을 사용
+            now=datetime.now().strftime(self.ISO_DATEFORMAT)
             if self.is_simulation:
                 now=self.data[-1]['date_time']
             
             target_budget=self.budget/5
-            # 목표한 예산이 현재 잔고보다 많을 경우
-            # 목표 예산을 현재 잔고에 맞춘다
+            # 매수 금액이 현재 잔고보다 높을 경우
+            # 처음 설정한 매수금액을 현재 잔고 금액으로 변경한다.
             if target_budget>self.balance:
                 target_budget=self.balance
 
+            # 거래 수량
             amount=math.floor((target_budget/last_closing_price)*10000)/10000
             trading_request={
-                "id":DateConverter.timestamp_id(),
+                "id":str(round(time.time(),3)),
                 "type":"buy",
                 "price":last_closing_price,
                 "amount":amount,
                 "date_time":now
             }
+
+            # 최종 거래 요청 정보의 거래대금을 계산한 값
+            # 매수할 거래대금이 최소 주문 금액보다 작거나 현재 잔고보다 큰지 한 번 더 예외 상황 확인
+            total_value=round(float(last_closing_price)*amount)
+            if (self.min_price > total_value) or (total_value > self.balance):
+                raise UserWarning("매수할 거래대금(total_value)이 최소 주문 금액(min_price)보다 작거나 현재 잔고(balance)보다 큽니다.")
+
+            self.logger.info(f"[REQ] id: {trading_request['id']} =================")
+            self.logger.info(f"price: {last_closing_price}, amount: {amount}")
+            self.logger.info(f"type: buy, total_value: {total_value}")
+            self.logger.info("=======================================")
+
+            final_requests=[]
+            # 만약 waiting_requests에 체결되지 않고 대기 중이 거래 요청이 있다면
+            # 최소 요청을 추가하고 나서 거래 요청 정보(trading_request)를 추가하여 반환
+            # 이는 이전 거래에 대해 먼저 취소 요청 정보를 생성하고 신규 거래 요청 정보를 추가하기 위함
+            for request_id in self.waiting_requests:
+                # 거래 요청 정보는 중요하기 때문에 log 등록!
+                self.logger.info(f"cancel request added! {request_id}")
+                final_requests.append(
+                    {
+                        "id":request_id,
+                        "type":"cancel",
+                        "price":0,
+                        "amount":0,
+                        "date_time": now
+                    }
+                )
+            final_requests.append(trading_request)
+            return final_requests
 
         except (ValueError, KeyError) as msg:
             self.logger.error(f"invalid data {msg}")

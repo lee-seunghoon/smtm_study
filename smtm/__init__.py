@@ -9,11 +9,13 @@ from .data_provider import DataProvider
 from .simulation_data_provider import SimulationDataProvider
 from .log_manager import LogManager
 from .strategy import Strategy
+from .strategy_bnh import StrategyBuyAndHold
 
 __all__=[
     "DataProvider",
     "SimulationDataProvider",
     "LogManager",
-    "Strategy"
+    "Strategy",
+    "StrategyBuyAndHold"
 ]
 __version__='0.1.0'

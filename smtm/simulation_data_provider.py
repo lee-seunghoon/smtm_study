@@ -116,7 +116,9 @@ class SimulationDataProvider(DataProvider):
 
 if __name__=='__main__':
     dp=SimulationDataProvider()
-    end_date='2020-04-30T16:30:00'
+    # end_date='2020-04-30T16:30:00'
+    end_date=None
     count=50
     dp.initialize_simulation(end=end_date,count=count)
-    print(dp.data[1])
+    first_info=dp.get_info()
+    print(first_info)

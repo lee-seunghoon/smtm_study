@@ -1,7 +1,7 @@
 import copy
 import math
 import time
-from datetime import datetime, time
+from datetime import datetime
 from . import Strategy, LogManager
 
 class StrategyBuyAndHold(Strategy):
@@ -21,7 +21,7 @@ class StrategyBuyAndHold(Strategy):
     COMMISSION_RATIO = 0.0005
 
     def __init__(self):
-        self.is_intialized = False
+        self.is_initialized = False
         self.is_simulation = False
         self.data = []
         self.budget = 0
@@ -32,6 +32,22 @@ class StrategyBuyAndHold(Strategy):
         self.logger = LogManager.get_logger(__class__.__name__)
         self.name = "BnH"
         self.waiting_requests = {}
+
+    def initialize(self, budget, min_price=5000):
+        """
+        초기 자산 설정 기능
+        예산과 최소 거래 기능 금액을 설정
+        """
+        # 초기화가 이미 돼 있다면 아래 초기화 로직은 건너띈다
+        if self.is_initialized:
+            return
+
+        self.is_initialized=True
+        self.budget=budget
+        self.balance=budget
+        # 마켓의 최소 거래 가격을 설정한다.
+        self.min_price=min_price
+        self.logger.info('[INFO] Initialized Successed')
 
     def update_trading_info(self, info):
         """
@@ -49,7 +65,7 @@ class StrategyBuyAndHold(Strategy):
         }
         """
         # 업데이트 전에 항상 초기화가 돼 있어야 한다
-        if self.is_intialized is not True:
+        if self.is_initialized is not True:
             return
         
         # info == 최종 거래 요청 정보
@@ -70,20 +86,26 @@ class StrategyBuyAndHold(Strategy):
             "date_time": 시뮬레이션 모드에서는 데이터 시간 +2초
         }
         """
-        if self.is_intialized is not True:
+        if self.is_initialized is not True:
             return
 
         try:
             request=result['request']
             # 거래 상태가 requested 일 경우
+            # 거래가 요청되고 실제 처리는 되지 않은 상태이므로 waiting_requests 딕셔너리에 저장해둔다.
             if result['state']=="requested":
                 self.waiting_requests[request['id']]=result
                 return
+
             # 거래가 이미 완료 됐고, waiting requests에 id값이 이미 있을 때
             # self.waiting_requests 에서 요청값의 id로 저장된 값을 지운다
+            # 즉, 요청된 거래가 실제 이뤄졌다는 의미이다
             if result['state']=='done' and request['id'] in self.waiting_requests:
+                # 해당 거래 요청 데이터는 삭제한다.
                 del self.waiting_requests[request["id"]]
 
+            # 거래 금액과 수수료를 계산해서 현금 잔고(balance)를 업데이트하고,
+            # 로그를 출력한 후 result 변수를 복사해서 저장해 놓는다.
             total=float(result['price']) * float(result['amount'])
             fee=total * self.COMMISSION_RATIO
             if result['type']=='buy':
@@ -115,7 +137,7 @@ class StrategyBuyAndHold(Strategy):
             "date_time": 요청 데이터 생성 시간, 시뮬레이션 모드에서는 데이터 시간
         }]
         """
-        if self.is_intialized is not True:
+        if self.is_initialized is not True:
             return None
 
         try:

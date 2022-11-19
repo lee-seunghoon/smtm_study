@@ -54,3 +54,17 @@
 2022-11-15 22:04:49,577  INFO SimulationDataProvid    89 - [DATA] @ 2020-05-01T00:41:00
 2022-11-15 22:04:49,612  INFO SimulationDataProvid    52 - data is updated from server # end: None, count: 50
 2022-11-15 22:04:49,613  INFO SimulationDataProvid    89 - [DATA] @ 2022-11-15T21:15:00
+2022-11-19 13:02:38,966  INFO SimulationDataProvid    53 - data is updated from server # end: None, count: 50
+2022-11-19 13:04:54,648  INFO SimulationDataProvid    53 - data is updated from server # end: None, count: 50
+2022-11-19 13:04:54,652  INFO SimulationDataProvid    90 - [DATA] @ 2022-11-19T12:15:00
+2022-11-19 13:21:03,833 ERROR   StrategyBuyAndHold   208 - type object 'datetime.time' has no attribute 'time'
+2022-11-19 13:32:40,362 ERROR   StrategyBuyAndHold   208 - type object 'datetime.time' has no attribute 'time'
+2022-11-19 13:35:25,155 ERROR   StrategyBuyAndHold   208 - type object 'datetime.time' has no attribute 'time'
+2022-11-19 13:36:42,361 ERROR   StrategyBuyAndHold   208 - type object 'datetime.time' has no attribute 'time'
+2022-11-19 13:38:55,682  INFO   StrategyBuyAndHold    50 - [INFO] Initialized Successed
+2022-11-19 13:38:55,684 ERROR   StrategyBuyAndHold   209 - type object 'datetime.time' has no attribute 'time'
+2022-11-19 13:41:51,198  INFO   StrategyBuyAndHold    50 - [INFO] Initialized Successed
+2022-11-19 13:41:51,199  INFO   StrategyBuyAndHold   180 - [REQ] id: 1668832911.199 =================
+2022-11-19 13:41:51,202  INFO   StrategyBuyAndHold   181 - price: 23011000.0, amount: 0.0043
+2022-11-19 13:41:51,203  INFO   StrategyBuyAndHold   182 - type: buy, total_value: 98947
+2022-11-19 13:41:51,203  INFO   StrategyBuyAndHold   183 - =======================================

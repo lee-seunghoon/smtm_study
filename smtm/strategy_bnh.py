@@ -1,8 +1,10 @@
+import os, sys
 import copy
 import math
 import time
 from datetime import datetime
-from . import Strategy, LogManager
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from smtm import Strategy, LogManager, SimulationDataProvider
 
 class StrategyBuyAndHold(Strategy):
     """
@@ -218,3 +220,21 @@ class StrategyBuyAndHold(Strategy):
                     "date_time":now
                 }]
             return None
+
+if __name__=='__main__':
+    dp=SimulationDataProvider()
+    sbh=StrategyBuyAndHold()
+
+    # end_date='2020-04-30T16:30:00'
+    end_date='2022-11-18T04:06:00'
+    count=50
+    dp.initialize_simulation(end=end_date,count=count)
+    first_info=dp.get_info()
+
+    # 거래 정보 초기화
+    sbh.initialize(budget=500000, min_price=5000)
+    # 거래 정보 업데이트
+    sbh.update_trading_info(first_info)
+    # 거래 요청 정보 생성
+    req=sbh.get_request()
+    print(req)

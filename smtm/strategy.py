@@ -6,9 +6,11 @@ class Strategy(metaclass=ABCMeta):
     데이터 받아서 매매 판단하고 결과를 받아 다음 판단에 반영하는 전략 클래스
     """
 
+    @abstractmethod
     def initialize(self, budget, min_price=100):
         """예산을 설정하고 초기화"""
 
+    @abstractmethod
     def get_request(self):
         """
         전략에 따라 거래 요청 정보를 생성

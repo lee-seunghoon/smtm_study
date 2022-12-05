@@ -125,3 +125,17 @@
 2022-12-03 10:53:01,551  INFO   StrategyBuyAndHold   183 - price: 23178000.0, amount: 0.0043
 2022-12-03 10:53:01,556  INFO   StrategyBuyAndHold   184 - type: buy, total_value: 99665
 2022-12-03 10:53:01,558  INFO   StrategyBuyAndHold   185 - =======================================
+2022-12-05 22:59:47,655  INFO   StrategyBuyAndHold    52 - [INFO] Initialized Successed
+2022-12-05 22:59:47,655  INFO   StrategyBuyAndHold   182 - [REQ] id: 1670248787.656 =================
+2022-12-05 22:59:47,659  INFO   StrategyBuyAndHold   183 - price: 23011000.0, amount: 0.0043
+2022-12-05 22:59:47,659  INFO   StrategyBuyAndHold   184 - type: buy, total_value: 98947
+2022-12-05 22:59:47,659  INFO   StrategyBuyAndHold   185 - =======================================
+2022-12-05 22:59:47,659  INFO   StrategyBuyAndHold   118 - [RESULT] id: 1670248787.656 ================
+2022-12-05 22:59:47,659  INFO   StrategyBuyAndHold   119 - type: buy, msg: success
+2022-12-05 22:59:47,663  INFO   StrategyBuyAndHold   120 - price: 23011000.0, amount: 0.0043
+2022-12-05 22:59:47,663  INFO   StrategyBuyAndHold   121 - total: 98947.3, balance: 401003
+2022-12-05 22:59:47,663  INFO   StrategyBuyAndHold   122 - ================================================
+2022-12-05 22:59:47,663  INFO   StrategyBuyAndHold   182 - [REQ] id: 1670248787.664 =================
+2022-12-05 22:59:47,667  INFO   StrategyBuyAndHold   183 - price: 23178000.0, amount: 0.0043
+2022-12-05 22:59:47,671  INFO   StrategyBuyAndHold   184 - type: buy, total_value: 99665
+2022-12-05 22:59:47,675  INFO   StrategyBuyAndHold   185 - =======================================

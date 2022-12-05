@@ -102,3 +102,24 @@ class StrategyBuyAndHoldTests(unittest.TestCase):
         self.assertEqual(req[0]['amount'], expected_request['amount'])
 
         # 거래 결과 입력 - 요청됐지만 체결 안 됨
+        self.assertEqual(strategy.balance, 401003)
+        strategy.update_result(
+            {
+                "request":{
+                    "id":req[0]['id'],
+                    "type":"buy",
+                    "price":23178000.0,
+                    "amount":0.0043,
+                    "date_time":"2022-11-18T12:16:00"
+                },
+                "type":"buy",
+                "price":23178000.0,
+                "amount":0.0043,
+                "msg": "success",
+                "balance":0,
+                "state":"requested",
+                "date_time":"2022-11-18T12:16:00"
+            }
+        )
+        self.assertEqual(strategy.balance, 401003)
+        last_id=req[0]['id']

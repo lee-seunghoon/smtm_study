@@ -64,6 +64,8 @@ class VirtualMarket:
         if self.is_initialized:
             return
 
+        # --------------- 초기화가 안 돼 있다면 아래 코드 작동 -------------------
+
         # 쿼리 str 복사
         query_str=copy.deepcopy(self.QUERY_STRING)
 

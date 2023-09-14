@@ -150,8 +150,57 @@ class Analyzer:
         asset_info = self.get_asset_info_func()
         new_asset = copy.deepcopy(asset_info)
         new_asset['balance'] = float(new_asset['balance'])
-        # 시뮬레이션 상황이고, 거래 정보 리스트에 데이터가 있으면, 해당 거래 정보 리스트 중 제일 최근 데이터의 data time을 사용한다.
+        # 시뮬레이션 상황이고, 거래 정보 리스트에 데이터가 있으면, 해당 거래 정보 리스트 중 제일 최근 데이터의 date time을 사용한다.
         if self.is_simulation is True and len(self.trading_info_list) > 0:
             new_asset['date_time'] = self.trading_info_list[-1]['date_time']
         self.asset_info_list.append(new_asset)
-        self.make_scroe_record(new_asset)
+        self.make_score_record(new_asset)   # 자산 정보를 바탕으로 수익률을 계산해서 결과로 도출된 내용을 저장한다.
+
+    def make_score_record(self, new_info: dict):
+        """
+        수익률 기록 저장
+
+        new_info : 자산 정보
+            {
+                balance: 계좌 현금 잔고, float
+                asset(dict type): 자산 목록, 마켓 이름 -> key , (평균매입가격, 수량) -> value
+                quote: 종목별 현재 가격, dict
+            }
+
+        return:
+            score_record:
+                balance: 계좌 현금 잔고
+                cumulative_return: 기준 시점부터 누적 수익률
+                price_change_ratio: 기준 시점부터 보유 종목별 가격 변동률. (dict)
+                asset: 자산 정보. (tuple, list) => (종목, 평균 가격, 현재 가격, 수량, 수익률(소수점 3자리))
+                date_time: 데이터 생성 시간, 시뮬레이션 모드에서는 데이터 시간
+                kind: 3, 보고서를 위한 데이터 종류류
+        """
+
+        try:
+            start_total=self.__get_start_property_value()   # 시작 시점의 자산 총액
+            start_quote=self.asset_info_list[0]["quote"]    # 시작 시점의 시세 정보
+            current_total=float(new_info["balance"])        # 현시점의 자산 총액
+            current_quote=new_info["quote"]                 # 현시점의 시세 정보
+            cumulative_return = 0   # 누적 수익률 초기화
+            new_asset_list=[]
+            price_change_ratio={}
+            self.logger.debug(f"make_score_record new_info : {new_info}")
+
+            # 현재까지 축적된 자산의 모든 정보를 for문으로 불러와 수익률 계산
+            # 자산의 현시점 수익률, 가격 변동률, 전체 자산 총액 도출
+            for name, item in new_info["asset"].items():
+                item_yield = 0          # 현재 자산의 수익률 정의(초기화)
+                amount = float(item[1]) # 현재 불러온 자산(주식)의 총량
+                buy_avg = float(item[0]) # 현재 불러온 자산(주식)의 평균 매입 가격
+                price = float(current_quote[name])  # 현재 종목의 가격
+                current_total += amount * price     # 자산 총액 모두 더하기
+                item_price_diff = price - buy_avg   # 시세 대비 평균 매입가격의 차이
+
+                # 보유한 자산의 현재 수익률 계산 (소수점 3자리)
+                if item_price_diff != 0 and buy_avg != 0:
+                    item_yield = round((price - buy_avg) / buy_avg * 100, 3)
+
+                self.logger.debug(
+                    f"yield record {name}\n buy_avg: {buy_avg} \n price: {price} \n amount: {amount} \n item_yield: {item_yield}"
+                )

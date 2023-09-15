@@ -194,7 +194,7 @@ class Analyzer:
                 amount = float(item[1]) # 현재 불러온 자산(주식)의 총량
                 buy_avg = float(item[0]) # 현재 불러온 자산(주식)의 평균 매입 가격
                 price = float(current_quote[name])  # 현재 종목의 가격
-                current_total += amount * price     # 자산 총액 모두 더하기
+                current_total += amount * price     # 전체 자산 총액 모두 더하기
                 item_price_diff = price - buy_avg   # 시세 대비 평균 매입가격의 차이
 
                 # 보유한 자산의 현재 수익률 계산 (소수점 3자리)
@@ -204,3 +204,39 @@ class Analyzer:
                 self.logger.debug(
                     f"yield record {name}\n buy_avg: {buy_avg} \n price: {price} \n amount: {amount} \n item_yield: {item_yield}"
                 )
+
+                # 현재 수익률까지 포함해서 자산 정보 추가
+                new_asset_list.append((name, buy_avg, price, amount, item_yield))
+                start_price = start_quote[name] # 현재 종목의 시작 시점의 가격
+                price_change_ratio[name]=0      # 시세 변경률 업데이트 위한 초기화
+                price_diff = price - start_price# 현재 시세와 시작 시점의 시세 차이
+                if price_diff != 0:
+                    price_change_ratio[name] = round(price_diff / start_price * 100, 3)   # 시세 변경률 업데이트
+
+                self.logger.debug(
+                    f"price change ratio : {start_price} -> {price}, {price_change_ratio}%"
+                )
+
+                # 현시점 자산 총액 - 시작 시점 자산 총액
+                total_diff = current_total - start_total
+                if total_diff != 0 :
+                    # 누적 수익률
+                    cumulative_return = round(total_diff / start_total * 100, 3)
+                self.logger.info(
+                    f"cumulative_return {start_total} -> {current_total}, {cumulative_return}%"
+                )
+
+                # 현재 수익률 및 자산 정보 저장
+                self.score_list.append(
+                    {
+                        "balance": float(new_info["balance"]),
+                        "cumulative_return": cumulative_return,
+                        "price_change_ratio": price_change_ratio,
+                        "asset": new_asset_list,
+                        "date_time": new_info['date_time'],
+                        "kind": 3
+                    }
+                )
+
+        except (IndexError, AttributeError) as msg:
+            self.logger.error(f"making score record fail : {msg}")

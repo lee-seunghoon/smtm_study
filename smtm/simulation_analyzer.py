@@ -1,6 +1,7 @@
 import copy
 import os
 from log_manager import LogManager
+from datetime import datetime
 
 class Analyzer:
     """
@@ -240,3 +241,25 @@ class Analyzer:
 
         except (IndexError, AttributeError) as msg:
             self.logger.error(f"making score record fail : {msg}")
+
+    def make_periodic_record(self):
+        """
+        주기적으로 수익률을 기록하지만
+        자산의 변경이 없는데 수익률을 계속 기록하는 것은 비효율적이다
+        그러므로 최소 사간 간격을 두고 수익률 기록을 저장하는데
+        최근 저장된 자산 정보의 시간을 기준으로 최소 시간 간격 보다 오래됐을 경우에만
+        update_asset_info 함수를 호출하여 자상 정보와 수익률을 저장한다
+
+        이 함수는 거래 정보가 입력될 때마다 호출되는데
+        아무리 호출 되도 마지막 기록시점부터 일정 시간이 지나지 않으면 작동하지 않도록 세팅
+        """
+        now = datetime.now()
+        if self.is_simulation:
+            now = datetime.strptime(self.trading_info_list[-1]["date_time"], self.ISO_DATEFORMAT)
+
+        last = datetime.strptime(self.asset_info_list[-1]["date_time"], self.ISO_DATEFORMAT)
+        delta = now - last
+
+        # 기록 주기와 비교하여 최근 저장한 거래 정보의 시간이 기룩 주기 이상일 경우 작동
+        if delta.total_seconds() > self.RECORD_INTERVAL:
+            self.update_asset_info()
